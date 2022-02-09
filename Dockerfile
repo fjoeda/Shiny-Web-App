@@ -14,6 +14,7 @@ RUN R -e 'install.packages(c(\
 
 COPY ./* /srv/shiny-server
 
+
 EXPOSE 3838
 
 CMD ["/usr/bin/shiny-server"]
