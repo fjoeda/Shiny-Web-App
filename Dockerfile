@@ -1,3 +1,6 @@
+# shiny-verse is the shiny docker image with tidyverse and devtools included.
+# more info on https://hub.docker.com/r/rocker/shiny-verse
+
 FROM rocker/shiny-verse:latest
 
 RUN apt-get update && apt-get install -y \
@@ -8,29 +11,17 @@ RUN apt-get update && apt-get install -y \
     libcairo2-dev \
     libxt-dev \
     libssl-dev \
-    libssh2-1-dev 
+    libssh2-1-dev
+    
+
 # install R packages required 
 # (change it dependeing on the packages you need)
 RUN R -e "install.packages('shiny', repos='http://cran.rstudio.com/')"
 RUN R -e "install.packages('shinydashboard', repos='http://cran.rstudio.com/')"
-RUN R -e "devtools::install_github('andrewsali/shinycssloaders')"
-RUN R -e "install.packages('lubridate', repos='http://cran.rstudio.com/')"
-RUN R -e "install.packages('magrittr', repos='http://cran.rstudio.com/')"
-RUN R -e "install.packages('glue', repos='http://cran.rstudio.com/')"
-RUN R -e "install.packages('DT', repos='http://cran.rstudio.com/')"
-RUN R -e "install.packages('plotly', repos='http://cran.rstudio.com/')"
-
-RUN R -e 'install.packages(c(\
-              "shiny", \
-              "shinydashboard", \
-              "ggplot2" \
-            ), \
-            repos="https://packagemanager.rstudio.com/cran/__linux__/focal/2021-04-23"\
-          )'
 
 COPY ./ /srv/shiny-server
 
-
+# 3838 is default shiny server port
 EXPOSE 3838
 
 CMD ["/usr/bin/shiny-server"]
